@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\TestApplication",
+    "\\TestApplication\\obj",
+    "\\TestApplication\\obj\\Debug",
+    "\\TestApplication\\obj\\Debug\\net6.0",
+    "\\TestApplication\\obj\\Debug\\net6.0\\ref",
+    "\\TestApplication\\obj\\Debug\\net6.0\\refint",
+    "\\TestApplication\\obj\\Release",
+    "\\TestApplication\\obj\\Release\\net6.0",
+    "\\TestApplication\\obj\\Release\\net6.0\\ref"
+  ],
+  "SelectedNode": "\\TestApplication\\obj\\Release\\net6.0\\refint\\TestApplication.dll",
+  "PreviewInSolutionExplorer": false
+}

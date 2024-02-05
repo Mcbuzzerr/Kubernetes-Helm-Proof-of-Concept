@@ -1,0 +1,28 @@
+Api:
+  Name: my-api
+  Service:
+    Name: api
+    Type: LoadBalancer
+    Ports:
+        Protocol: TCP
+        OuterPort: 8080
+        InnerPort: 80
+  Deployment:
+    Name: api-deployment
+    Replicas: 1
+  Image: 
+    Name: api-image
+    Tag: latest
+
+FilteredTestJob:
+  Name: filtered-test-job
+  Image: 
+    Name: test-image
+    Tag: latest
+  Args: 'Ready=True'
+
+TestJob:
+  Name: test-job
+  Image: 
+    Name: test-image
+    Tag: latest

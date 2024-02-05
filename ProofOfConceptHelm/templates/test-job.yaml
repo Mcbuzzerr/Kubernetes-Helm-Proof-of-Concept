@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Values.TestJob.Name}}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  template:
+    spec:
+      containers:
+      - name: {{ .Values.TestJob.Name}}
+        image: "{{ .Values.TestJob.Image.Name}}:{{ .Values.TestJob.Image.Tag}}"
+        imagePullPolicy: IfNotPresent
+      restartPolicy: Never

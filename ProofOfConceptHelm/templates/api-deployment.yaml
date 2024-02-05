@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.Api.Deployment.Name }}
+spec:
+  replicas: {{ .Values.Api.Deployment.Replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.Api.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.Api.Name }}
+    spec:
+      containers:
+      - name: {{ .Values.Api.Name }}
+        image: "{{ .Values.Api.Image.Name}}:{{ .Values.Api.Image.Tag}}"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: {{ .Values.Api.Service.Ports.OuterPort }}
+        env:
+        - name: "TEST_TARGET_SERVICE_NAME"
+          value: "{{ .Values.Api.Service.Name }}"
+        - name: "TEST_TARGET_SERVICE_PORT"
+          value: "{{ .Values.Api.Service.Ports.OuterPort }}"
