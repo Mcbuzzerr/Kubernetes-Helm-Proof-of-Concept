@@ -17,11 +17,6 @@ FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./WebApplication2.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# To modify this image to grab a NuGet package instead of building from source
-# Change the COPY line to copy from wherever the NuGet package is stored instead of making it from source code
-# This might still be a multistage build, but the first stage would be to grab the NuGet package
-# and the second stage would be to copy the NuGet package into the final image
-
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .

@@ -1,14 +1,13 @@
 # Pre-Requisites
 
 - [Docker](https://www.docker.com/products/docker-desktop) - containerization
-- [Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) - single node kubernetes cluster (for local development)
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) - kubernetes command line tool (Should be installed with minikube)
 - [Helm](https://helm.sh/docs/intro/install/) - kubernetes package manager
+- [Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/) - single node kubernetes cluster (for local development)
+- [AWS CLI](https://aws.amazon.com/cli/) - AWS command line tool (for use with AWS EKS)
+- [Eksctl](https://eksctl.io/) - AWS EKS command line tool (for use with AWS EKS)
 
-
-# Setup
-
-Start up minikube
+## Setting Up Minikube (Skip if doing AWS)
 
 ```
 minikube start
@@ -26,15 +25,51 @@ eval $(minikube docker-env)
 
 To verify that the docker daemon is pointing to the minikube daemon, run `docker images ls` and you should see a list of images that are kubernetes related.
 
-Build our docker images
+## Setting Up AWS (Skip if doing Minikube)
+
+To create an EKS Cluster you can use the console or eksctl
+
+To create a cluster with eksctl, run the following command
+
+```
+eksctl create cluster --name %CLUSTER_NAME% --region %REGION% --nodegroup-name %NODEGROUP_NAME% --node-type t2.small --nodes 3 --nodes-min 1 --nodes-max 5 --managed
+```
+
+Point our kubectl client to the EKS cluster
+
+```
+aws eks update-kubeconfig --region %REGION% --name %CLUSTER_NAME%
+```
+
+Login/Connect to the ECR (Make this in the AWS console or using the AWS CLI, default settings are ok)
+```
+aws ecr get-login-password --region %REGION% | docker login --username AWS --password-stdin %ACCTNUM%.dkr.ecr.%REGION%.amazonaws.com/%ECR_CONTAINER_NAME%
+```
+
+## Build our docker images
 ```
 docker build -t api-image ./WebApplication2 -f ./WebApplication2/WebApplication2/Dockerfile
 docker build -t test-image ./TestApplication -f ./TestApplication/TestApplication/Dockerfile
 ```
 
-Run helm install to install the chart
+Note: For minikube we don't need to push our images to a registry because we pointed our docker client to the minikube daemon so it already has access to them. For AWS EKS we need to push our images to AWS ECR.
+
+## Push our images to AWS ECR
+
+Tag our images
 ```
-helm install poc-helm-release ProofOfConceptHelm/
+docker tag %IMAGE_NAME%:%VERSION% %ACCTNUM%.dkr.ecr.%REGION%.amazonaws.com/%ECR_CONTAINER_NAME%:%IMAGE_NAME%
+```
+Push our images
+```
+docker push %ACCTNUM%.dkr.ecr.%REGION%.amazonaws.com/%ECR_CONTAINER_NAME%:%IMAGE_NAME%
+```
+
+## Run helm install to install the chart
+
+
+```
+helm install unique-release-name ProofOfConceptHelm/
 ```
 
 The deployment can have its values changed from the default (values.yaml) by using the --values or -f flag and specifying the path to which values file to use
