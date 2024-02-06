@@ -11,18 +11,18 @@ Api:
     Name: api-deployment
     Replicas: 1
   Image: 
-    Name: api-image
-    Tag: latest
+    Name: 993145419620.dkr.ecr.us-west-2.amazonaws.com/kubernetes_containers
+    Tag: api-image
 
 FilteredTestJob:
   Name: filtered-test-job
   Image: 
-    Name: test-image
-    Tag: latest
+    Name: 993145419620.dkr.ecr.us-west-2.amazonaws.com/kubernetes_containers
+    Tag: test-image
   Args: 'Ready=True'
 
 TestJob:
   Name: test-job
   Image: 
-    Name: test-image
-    Tag: latest
+    Name: 993145419620.dkr.ecr.us-west-2.amazonaws.com/kubernetes_containers
+    Tag: test-image

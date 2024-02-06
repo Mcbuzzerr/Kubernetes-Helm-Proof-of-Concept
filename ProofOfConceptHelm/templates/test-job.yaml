@@ -11,4 +11,9 @@ spec:
       - name: {{ .Values.TestJob.Name}}
         image: "{{ .Values.TestJob.Image.Name}}:{{ .Values.TestJob.Image.Tag}}"
         imagePullPolicy: IfNotPresent
+        env:
+        - name: "TEST_TARGET_SERVICE_NAME"
+          value: "{{ .Values.Api.Service.Name }}"
+        - name: "TEST_TARGET_SERVICE_PORT"
+          value: "{{ .Values.Api.Service.Ports.OuterPort }}"
       restartPolicy: Never
