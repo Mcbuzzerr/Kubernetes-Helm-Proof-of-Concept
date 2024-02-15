@@ -1,4 +1,6 @@
-# Pre-Requisites
+# How to set up Kubernetes cluster with Helm using Minikube or AWS EKS
+
+## Pre-Requisites
 
 - [Docker](https://www.docker.com/products/docker-desktop) - containerization
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) - kubernetes command line tool (Should be installed with minikube)
@@ -54,7 +56,7 @@ docker build -t test-image ./TestApplication -f ./TestApplication/TestApplicatio
 
 Note: For minikube we don't need to push our images to a registry because we pointed our docker client to the minikube daemon so it already has access to them. For AWS EKS we need to push our images to AWS ECR.
 
-## Push our images to AWS ECR
+## Push our images to AWS ECR (Skip if doing Minikube)
 
 Tag our images
 ```
